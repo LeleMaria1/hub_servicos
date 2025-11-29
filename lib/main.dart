@@ -1,5 +1,6 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
+import 'package:hub_servicos/screens/booking_screen.dart';
 import 'package:provider/provider.dart';
 import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
@@ -42,6 +43,11 @@ class MyApp extends StatelessWidget {
           '/professional-profile': (context) {
             final professional = ModalRoute.of(context)!.settings.arguments as ProfessionalModel;
             return ProfessionalProfileScreen(professional: professional);
+          },
+          // No MaterialApp do main.dart, adicione:
+          '/schedule': (context) {
+            final professional = ModalRoute.of(context)!.settings.arguments as ProfessionalModel;
+            return BookingScreen(professional: professional);
           },
         },
         debugShowCheckedModeBanner: false,

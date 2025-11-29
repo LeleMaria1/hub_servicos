@@ -39,6 +39,9 @@ class ProfessionalsService with ChangeNotifier {
             hourlyRate: 80.00,
             imageUrl: '',
             services: ['Desentupimento', 'Instalação', 'Manutenção'],
+            experience: '15 anos',
+            location: 'São Paulo - SP',
+            reviews: [],
           ),
           ProfessionalModel(
             id: '2',
@@ -50,6 +53,9 @@ class ProfessionalsService with ChangeNotifier {
             hourlyRate: 95.00,
             imageUrl: '',
             services: ['Reforma', 'Instalação', 'Manutenção Preventiva'],
+            experience: '20 anos',
+            location: 'São Paulo - SP',
+            reviews: [],
           ),
         ];
 
@@ -65,6 +71,9 @@ class ProfessionalsService with ChangeNotifier {
             hourlyRate: 75.00,
             imageUrl: '',
             services: ['Instalação', 'Manutenção', 'Quadros Elétricos'],
+            experience: '12 anos',
+            location: 'São Paulo - SP',
+            reviews: [],
           ),
         ];
 
@@ -80,6 +89,9 @@ class ProfessionalsService with ChangeNotifier {
             hourlyRate: 60.00,
             imageUrl: '',
             services: ['Limpeza Residencial', 'Organização', 'Pós-Obra'],
+            experience: '8 anos',
+            location: 'São Paulo - SP',
+            reviews: [],
           ),
         ];
 

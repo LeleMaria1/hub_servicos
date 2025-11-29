@@ -1,12 +1,14 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
-import 'package:hub_servicos/models/category_model.dart';
-import 'package:hub_servicos/screens/professionals_screen.dart';
 import 'package:provider/provider.dart';
 import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
+import 'screens/professionals_screen.dart';
+import 'screens/professional_profile_screen.dart';
 import 'services/auth_service.dart';
 import 'services/home_service.dart';
+import 'models/category_model.dart';
+import 'models/professional_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,7 +30,6 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         home: const AuthScreen(),
-        // No MaterialApp do main.dart, adicione:
         routes: {
           '/home': (context) => ChangeNotifierProvider(
                 create: (context) => HomeService(),
@@ -37,6 +38,10 @@ class MyApp extends StatelessWidget {
           '/professionals': (context) {
             final category = ModalRoute.of(context)!.settings.arguments as CategoryModel;
             return ProfessionalsScreen(category: category);
+          },
+          '/professional-profile': (context) {
+            final professional = ModalRoute.of(context)!.settings.arguments as ProfessionalModel;
+            return ProfessionalProfileScreen(professional: professional);
           },
         },
         debugShowCheckedModeBanner: false,

@@ -11,9 +11,12 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navegar para lista de profissionais desta categoria
-        Navigator.pushNamed(context, '/professionals', arguments: category);
-      },
+      Navigator.pushNamed(
+      context,
+      '/professionals',
+      arguments: category,
+    );
+},
       child: Container(
         decoration: BoxDecoration(
           color: category.color.withOpacity(0.1),

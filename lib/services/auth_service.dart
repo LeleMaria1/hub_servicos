@@ -54,7 +54,12 @@ class AuthService with ChangeNotifier {
 
       // Verificar senha (mock - na prática seria hash)
       if (password != '123456') { // Senha padrão para teste
-        throw Exception('Senha incorreta. Tente: 123456');
+        // Mensagem personalizada só para email de teste
+        if (email == 'teste@email.com') {
+          throw Exception('Senha incorreta. Use: 123456');
+        } else {
+          throw Exception('Senha incorreta');
+        }
       }
 
       _currentUser = user;

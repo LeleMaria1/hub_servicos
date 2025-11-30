@@ -1,18 +1,20 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
-import 'package:hub_servicos/models/booking_model.dart';
-import 'package:hub_servicos/screens/booking_confirmation_screen.dart';
-import 'package:hub_servicos/screens/booking_history_screen.dart';
-import 'package:hub_servicos/screens/booking_screen.dart';
 import 'package:provider/provider.dart';
 import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/professionals_screen.dart';
 import 'screens/professional_profile_screen.dart';
+import 'screens/booking_screen.dart';
+import 'screens/booking_confirmation_screen.dart';
+import 'screens/booking_history_screen.dart';
+import 'screens/review_screen.dart';
 import 'services/auth_service.dart';
 import 'services/home_service.dart';
+import 'services/review_service.dart'; // Adicionar import
 import 'models/category_model.dart';
 import 'models/professional_model.dart';
+import 'models/booking_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,6 +28,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthService()),
+        ChangeNotifierProvider(create: (context) => ReviewService()), // Provider global
       ],
       child: MaterialApp(
         title: 'Hub de Serviços',
@@ -47,18 +50,22 @@ class MyApp extends StatelessWidget {
             final professional = ModalRoute.of(context)!.settings.arguments as ProfessionalModel;
             return ProfessionalProfileScreen(professional: professional);
           },
-          // No MaterialApp do main.dart, adicione:
           '/schedule': (context) {
             final professional = ModalRoute.of(context)!.settings.arguments as ProfessionalModel;
             return BookingScreen(professional: professional);
           },
-          // No MaterialApp do main.dart, adicione:
           '/booking-confirmation': (context) {
             final booking = ModalRoute.of(context)!.settings.arguments as BookingModel;
             return BookingConfirmationScreen(booking: booking);
           },
-          // No MaterialApp do main.dart, adicione:
           '/booking-history': (context) => const BookingHistoryScreen(),
+          '/review': (context) {
+            final args = ModalRoute.of(context)!.settings.arguments as Map;
+            return ReviewScreen(
+              booking: args['booking'] as BookingModel,
+              professional: args['professional'] as ProfessionalModel,
+            );
+          },
         },
         debugShowCheckedModeBanner: false,
       ),

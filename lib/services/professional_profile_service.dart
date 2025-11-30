@@ -1,6 +1,7 @@
 // lib/services/professional_profile_service.dart
 import 'package:flutter/foundation.dart';
 import '../models/professional_model.dart';
+import '../models/review.dart'; // Importar Review
 
 class ProfessionalProfileService with ChangeNotifier {
   ProfessionalModel? _professional;
@@ -38,17 +39,17 @@ class ProfessionalProfileService with ChangeNotifier {
           experience: '15 anos',
           location: 'São Paulo - SP',
           reviews: [
-            Review(
+            Review( // Usar Review em vez de ReviewModel
               clientName: 'Maria Silva',
               rating: 5.0,
               comment: 'Excelente profissional! Resolveu meu problema rapidamente.',
-              date: '2024-01-15',
+              date: '15/01/2024',
             ),
             Review(
               clientName: 'João Santos',
               rating: 4.5,
               comment: 'Muito prestativo e competente.',
-              date: '2024-01-10',
+              date: '10/01/2024',
             ),
           ],
         );
@@ -71,7 +72,7 @@ class ProfessionalProfileService with ChangeNotifier {
               clientName: 'Ana Costa',
               rating: 5.0,
               comment: 'Profissional muito experiente e honesto.',
-              date: '2024-01-12',
+              date: '12/01/2024',
             ),
           ],
         );
@@ -91,6 +92,14 @@ class ProfessionalProfileService with ChangeNotifier {
           location: 'São Paulo - SP',
           reviews: [],
         );
+    }
+  }
+
+  void updateProfessionalReviews(String professionalId, List<Review> reviews) {
+    if (_professional != null && reviews.isNotEmpty) {
+      // Atualizar as reviews do professional
+      _professional = _professional!.copyWith(reviews: reviews);
+      notifyListeners();
     }
   }
 

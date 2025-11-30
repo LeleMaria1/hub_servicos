@@ -1,5 +1,6 @@
 // lib/widgets/booking_history_card.dart
 import 'package:flutter/material.dart';
+import 'package:hub_servicos/models/professional_model.dart';
 import '../models/booking_model.dart';
 
 class BookingHistoryCard extends StatelessWidget {
@@ -109,6 +110,25 @@ class BookingHistoryCard extends StatelessWidget {
                   ),
                 ],
               ),
+              
+              // Botão de avaliação para serviços concluídos
+              if (booking.status == 'completed') ...[
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      // Navegar para tela de avaliação
+                      _navigateToReviewScreen(context);
+                    },
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.blue,
+                      side: const BorderSide(color: Colors.blue),
+                    ),
+                    child: const Text('Avaliar Serviço'),
+                  ),
+                ),
+              ],
             ],
           ),
         ),
@@ -154,4 +174,44 @@ class BookingHistoryCard extends StatelessWidget {
     if (address.length <= 40) return address;
     return '${address.substring(0, 37)}...';
   }
+
+  // Substitua o método _navigateToReviewScreen por este:
+  void _navigateToReviewScreen(BuildContext context) {
+    // Criar professional mock baseado no booking
+    final professional = ProfessionalModel(
+      id: booking.professionalId,
+      name: booking.professionalName,
+      categoryId: '1',
+      description: 'Profissional qualificado',
+      rating: 4.5,
+      completedJobs: 50,
+      hourlyRate: booking.totalPrice / 2,
+      imageUrl: '',
+      services: [booking.serviceType],
+      experience: 'Experiência comprovada',
+      location: 'São Paulo - SP',
+      reviews: [],
+    );
+
+    Navigator.pushNamed(
+      context,
+      '/review',
+      arguments: {
+        'booking': booking,
+        'professional': professional,
+      },
+    );
+  }
+    
+    // Para implementação completa, descomente:
+    /*
+    Navigator.pushNamed(
+      context,
+      '/review',
+      arguments: {
+        'booking': booking,
+        'professional': professional, // Precisaria receber o professional
+      },
+    );
+    */
 }

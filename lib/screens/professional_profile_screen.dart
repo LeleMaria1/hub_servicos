@@ -1,7 +1,9 @@
 // lib/screens/professional_profile_screen.dart
 import 'package:flutter/material.dart';
+import 'package:hub_servicos/models/review.dart';
 import 'package:provider/provider.dart';
 import '../services/professional_profile_service.dart';
+import '../services/review_service.dart';
 import '../models/professional_model.dart';
 import '../widgets/review_card.dart';
 
@@ -12,9 +14,60 @@ class ProfessionalProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ProfessionalProfileService(),
-      child: _ProfessionalProfileScreenContent(professional: professional),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ProfessionalProfileService()),
+      ],
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: const Text(
+            'Perfil do Profissional',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.grey),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        body: _ProfessionalProfileScreenContent(professional: professional),
+        floatingActionButton: _buildScheduleButton(context),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      ),
+    );
+  }
+
+  Widget _buildScheduleButton(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      child: ElevatedButton(
+        onPressed: () {
+          final profileService = Provider.of<ProfessionalProfileService>(context, listen: false);
+          Navigator.pushNamed(
+            context,
+            '/schedule',
+            arguments: profileService.professional ?? professional,
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: const Text(
+          'Agendar Serviço',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+      ),
     );
   }
 }
@@ -27,6 +80,7 @@ class _ProfessionalProfileScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final profileService = Provider.of<ProfessionalProfileService>(context);
+    final reviewService = Provider.of<ReviewService>(context); // Agora usa o provider global
 
     // Carregar perfil completo quando a tela é aberta
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -35,62 +89,36 @@ class _ProfessionalProfileScreenContent extends StatelessWidget {
       }
     });
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text(
-          'Perfil do Profissional',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.blue,
-          ),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.grey),
-          onPressed: () => Navigator.pop(context),
-        ),
+    if (profileService.isLoading || profileService.professional == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    final prof = profileService.professional!;
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Cabeçalho do perfil
+          _buildProfileHeader(prof),
+          const SizedBox(height: 24),
+
+          // Serviços oferecidos
+          _buildServicesSection(prof),
+          const SizedBox(height: 24),
+
+          // Sobre o profissional
+          _buildAboutSection(prof),
+          const SizedBox(height: 24),
+
+          // Avaliações
+          _buildReviewsSection(prof, reviewService),
+          const SizedBox(height: 80),
+        ],
       ),
-      body: Consumer<ProfessionalProfileService>(
-        builder: (context, service, child) {
-          if (service.isLoading || service.professional == null) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          final prof = service.professional!;
-
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Cabeçalho do perfil
-                _buildProfileHeader(prof),
-                const SizedBox(height: 24),
-
-                // Serviços oferecidos
-                _buildServicesSection(prof),
-                const SizedBox(height: 24),
-
-                // Sobre o profissional
-                _buildAboutSection(prof),
-                const SizedBox(height: 24),
-
-                // Avaliações
-                _buildReviewsSection(prof),
-                const SizedBox(height: 80), // Espaço para o botão flutuante
-              ],
-            ),
-          );
-        },
-      ),
-      
-      // Botão flutuante para agendar
-      floatingActionButton: _buildScheduleButton(context),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -102,7 +130,6 @@ class _ProfessionalProfileScreenContent extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
-            // Foto do profissional
             Container(
               width: 80,
               height: 80,
@@ -117,8 +144,6 @@ class _ProfessionalProfileScreenContent extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 16),
-            
-            // Informações principais
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,8 +164,6 @@ class _ProfessionalProfileScreenContent extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  
-                  // Rating e jobs
                   Row(
                     children: [
                       const Icon(Icons.star, color: Colors.amber, size: 16),
@@ -159,8 +182,6 @@ class _ProfessionalProfileScreenContent extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  
-                  // Preço por hora
                   Text(
                     'R\$${prof.hourlyRate.toStringAsFixed(2)}/hora',
                     style: const TextStyle(
@@ -250,7 +271,23 @@ class _ProfessionalProfileScreenContent extends StatelessWidget {
     );
   }
 
-  Widget _buildReviewsSection(ProfessionalModel prof) {
+  Widget _buildReviewsSection(ProfessionalModel prof, ReviewService reviewService) {
+    // Obter avaliações do ReviewService
+    final professionalReviews = reviewService.getReviewsByProfessional(prof.id);
+    
+    // Converter ReviewModel para Review
+    final convertedReviews = professionalReviews.map((reviewModel) {
+      return Review(
+        clientName: reviewModel.clientName,
+        rating: reviewModel.rating,
+        comment: reviewModel.comment,
+        date: '${reviewModel.date.day}/${reviewModel.date.month}/${reviewModel.date.year}',
+      );
+    }).toList();
+
+    // Combinar avaliações do service com as do perfil
+    final allReviews = [...prof.reviews, ...convertedReviews];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -263,48 +300,18 @@ class _ProfessionalProfileScreenContent extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         
-        if (prof.reviews.isEmpty)
+        if (allReviews.isEmpty)
           const Text(
             'Nenhuma avaliação ainda',
             style: TextStyle(color: Colors.grey),
           )
         else
           Column(
-            children: prof.reviews.map((review) {
+            children: allReviews.map((review) {
               return ReviewCard(review: review);
             }).toList(),
           ),
       ],
-    );
-  }
-
-  Widget _buildScheduleButton(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      child: ElevatedButton(
-        onPressed: () {
-          // Navegar para tela de agendamento (próxima tela)
-          final profileService = Provider.of<ProfessionalProfileService>(context, listen: false);
-          Navigator.pushNamed(
-            context,
-            '/schedule',
-            arguments: profileService.professional!,
-          );
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        child: const Text(
-          'Agendar Serviço',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-      ),
     );
   }
 }

@@ -1,6 +1,6 @@
 // lib/widgets/review_card.dart
 import 'package:flutter/material.dart';
-import '../models/professional_model.dart';
+import '../models/review.dart'; // Importar do arquivo único
 
 class ReviewCard extends StatelessWidget {
   final Review review;

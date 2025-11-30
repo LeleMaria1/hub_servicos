@@ -1,4 +1,6 @@
-// lib/models/professional_model.dart (atualizado)
+// Mantenha apenas o ProfessionalModel:
+import 'review.dart'; // Importar do arquivo separado
+
 class ProfessionalModel {
   final String id;
   final String name;
@@ -11,7 +13,7 @@ class ProfessionalModel {
   final List<String> services;
   final String experience;
   final String location;
-  final List<Review> reviews;
+  final List<Review> reviews; // Usar Review do arquivo separado
 
   ProfessionalModel({
     required this.id,
@@ -27,18 +29,34 @@ class ProfessionalModel {
     required this.location,
     required this.reviews,
   });
-}
 
-class Review {
-  final String clientName;
-  final double rating;
-  final String comment;
-  final String date;
-
-  Review({
-    required this.clientName,
-    required this.rating,
-    required this.comment,
-    required this.date,
-  });
+  ProfessionalModel copyWith({
+    String? id,
+    String? name,
+    String? categoryId,
+    String? description,
+    double? rating,
+    int? completedJobs,
+    double? hourlyRate,
+    String? imageUrl,
+    List<String>? services,
+    String? experience,
+    String? location,
+    List<Review>? reviews,
+  }) {
+    return ProfessionalModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      categoryId: categoryId ?? this.categoryId,
+      description: description ?? this.description,
+      rating: rating ?? this.rating,
+      completedJobs: completedJobs ?? this.completedJobs,
+      hourlyRate: hourlyRate ?? this.hourlyRate,
+      imageUrl: imageUrl ?? this.imageUrl,
+      services: services ?? this.services,
+      experience: experience ?? this.experience,
+      location: location ?? this.location,
+      reviews: reviews ?? this.reviews,
+    );
+  }
 }

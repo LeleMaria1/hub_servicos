@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../services/home_service.dart';
 import '../models/category_model.dart';
 import '../models/service_model.dart';
+import '../models/booking_model.dart';
+import '../models/professional_model.dart';
 import '../widgets/category_card.dart';
 import '../widgets/service_card.dart';
 
@@ -77,6 +79,63 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 32),
+
+                // Botão temporário para testar avaliação
+                Container(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Criar dados mock para teste
+                      final booking = BookingModel(
+                        id: 'test',
+                        professionalId: '1',
+                        professionalName: 'João Encanador',
+                        clientId: 'current_user',
+                        serviceType: 'Desentupimento',
+                        date: DateTime.now(),
+                        time: '10:00',
+                        address: 'Rua Teste, 123 - São Paulo, SP',
+                        description: 'Desentupimento de pia da cozinha',
+                        totalPrice: 120.00,
+                        status: 'completed',
+                      );
+                      
+                      final professional = ProfessionalModel(
+                        id: '1',
+                        name: 'João Encanador',
+                        categoryId: '1',
+                        description: 'Especialista em desentupimentos e instalações',
+                        rating: 4.8,
+                        completedJobs: 127,
+                        hourlyRate: 80.00,
+                        imageUrl: '',
+                        services: ['Desentupimento', 'Instalação', 'Manutenção'],
+                        experience: '15 anos',
+                        location: 'São Paulo - SP',
+                        reviews: [],
+                      );
+
+                      Navigator.pushNamed(
+                        context,
+                        '/review',
+                        arguments: {
+                          'booking': booking,
+                          'professional': professional,
+                        },
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                    child: const Text(
+                      '🧪 Testar Tela de Avaliação',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
 
                 // Campo de busca
                 Container(

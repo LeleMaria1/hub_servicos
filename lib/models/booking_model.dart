@@ -26,3 +26,33 @@ class BookingModel {
     required this.status,
   });
 }
+// No final do arquivo lib/models/booking_model.dart, adicione:
+extension BookingModelCopyWith on BookingModel {
+  BookingModel copyWith({
+    String? id,
+    String? professionalId,
+    String? professionalName,
+    String? clientId,
+    String? serviceType,
+    DateTime? date,
+    String? time,
+    String? address,
+    String? description,
+    double? totalPrice,
+    String? status,
+  }) {
+    return BookingModel(
+      id: id ?? this.id,
+      professionalId: professionalId ?? this.professionalId,
+      professionalName: professionalName ?? this.professionalName,
+      clientId: clientId ?? this.clientId,
+      serviceType: serviceType ?? this.serviceType,
+      date: date ?? this.date,
+      time: time ?? this.time,
+      address: address ?? this.address,
+      description: description ?? this.description,
+      totalPrice: totalPrice ?? this.totalPrice,
+      status: status ?? this.status,
+    );
+  }
+}

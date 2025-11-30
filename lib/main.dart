@@ -1,5 +1,7 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
+import 'package:hub_servicos/models/booking_model.dart';
+import 'package:hub_servicos/screens/booking_confirmation_screen.dart';
 import 'package:hub_servicos/screens/booking_screen.dart';
 import 'package:provider/provider.dart';
 import 'screens/auth_screen.dart';
@@ -48,6 +50,11 @@ class MyApp extends StatelessWidget {
           '/schedule': (context) {
             final professional = ModalRoute.of(context)!.settings.arguments as ProfessionalModel;
             return BookingScreen(professional: professional);
+          },
+          // No MaterialApp do main.dart, adicione:
+          '/booking-confirmation': (context) {
+            final booking = ModalRoute.of(context)!.settings.arguments as BookingModel;
+            return BookingConfirmationScreen(booking: booking);
           },
         },
         debugShowCheckedModeBanner: false,

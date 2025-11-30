@@ -1,5 +1,6 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
+import 'package:hub_servicos/screens/chat_screen.dart';
 import 'package:provider/provider.dart';
 import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
@@ -65,6 +66,11 @@ class MyApp extends StatelessWidget {
               booking: args['booking'] as BookingModel,
               professional: args['professional'] as ProfessionalModel,
             );
+          },
+          // No MaterialApp do main.dart, adicione:
+          '/chat': (context) {
+            final professional = ModalRoute.of(context)!.settings.arguments as ProfessionalModel;
+            return ChatScreen(professional: professional);
           },
         },
         debugShowCheckedModeBanner: false,

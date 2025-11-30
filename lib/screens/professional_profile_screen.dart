@@ -80,7 +80,7 @@ class _ProfessionalProfileScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final profileService = Provider.of<ProfessionalProfileService>(context);
-    final reviewService = Provider.of<ReviewService>(context); // Agora usa o provider global
+    final reviewService = Provider.of<ReviewService>(context);
 
     // Carregar perfil completo quando a tela é aberta
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -103,7 +103,7 @@ class _ProfessionalProfileScreenContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Cabeçalho do perfil
-          _buildProfileHeader(prof),
+          _buildProfileHeader(prof, context),
           const SizedBox(height: 24),
 
           // Serviços oferecidos
@@ -122,7 +122,7 @@ class _ProfessionalProfileScreenContent extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileHeader(ProfessionalModel prof) {
+  Widget _buildProfileHeader(ProfessionalModel prof, BuildContext context) {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -188,6 +188,31 @@ class _ProfessionalProfileScreenContent extends StatelessWidget {
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.blue,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/chat',
+                          arguments: prof,
+                        );
+                      },
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.blue,
+                        side: const BorderSide(color: Colors.blue),
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.chat, size: 16),
+                          SizedBox(width: 8),
+                          Text('Enviar Mensagem'),
+                        ],
+                      ),
                     ),
                   ),
                 ],

@@ -41,11 +41,12 @@ class HomeScreen extends StatelessWidget {
             tooltip: 'Notificações',
           ),
           IconButton(
-            icon: const Icon(Icons.person_outline, color: Colors.grey),
+            icon: const Icon(Icons.settings, color: Colors.grey),
             onPressed: () {
-              // Navegar para perfil depois
+              // Navegar para configurações
+              Navigator.pushNamed(context, '/settings');
             },
-            tooltip: 'Perfil',
+            tooltip: 'Configurações',
           ),
         ],
       ),

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:hub_servicos/models/booking_model.dart';
 import 'package:hub_servicos/screens/booking_confirmation_screen.dart';
+import 'package:hub_servicos/screens/booking_history_screen.dart';
 import 'package:hub_servicos/screens/booking_screen.dart';
 import 'package:provider/provider.dart';
 import 'screens/auth_screen.dart';
@@ -56,6 +57,8 @@ class MyApp extends StatelessWidget {
             final booking = ModalRoute.of(context)!.settings.arguments as BookingModel;
             return BookingConfirmationScreen(booking: booking);
           },
+          // No MaterialApp do main.dart, adicione:
+          '/booking-history': (context) => const BookingHistoryScreen(),
         },
         debugShowCheckedModeBanner: false,
       ),

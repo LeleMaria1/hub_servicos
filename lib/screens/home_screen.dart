@@ -26,14 +26,24 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         actions: [
           IconButton(
+            icon: const Icon(Icons.history, color: Colors.grey),
+            onPressed: () {
+              // Navegar para histórico de agendamentos
+              Navigator.pushNamed(context, '/booking-history');
+            },
+            tooltip: 'Meus Agendamentos',
+          ),
+          IconButton(
             icon: const Icon(Icons.notifications_none, color: Colors.grey),
             onPressed: () {},
+            tooltip: 'Notificações',
           ),
           IconButton(
             icon: const Icon(Icons.person_outline, color: Colors.grey),
             onPressed: () {
               // Navegar para perfil depois
             },
+            tooltip: 'Perfil',
           ),
         ],
       ),
@@ -87,12 +97,26 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 32),
 
                 // Categorias
-                const Text(
-                  'Categorias',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Categorias',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        // Ver todas as categorias (opcional)
+                      },
+                      child: const Text(
+                        'Ver todas',
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 16),
 
@@ -115,12 +139,26 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 32),
 
                 // Serviços Populares
-                const Text(
-                  'Serviços Populares',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Serviços Populares',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        // Ver todos os serviços (opcional)
+                      },
+                      child: const Text(
+                        'Ver todos',
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 16),
 
